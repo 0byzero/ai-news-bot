@@ -52,10 +52,11 @@ def fetch_ai_news():
     article = random.choice(articles)
 
     print (f"===Random article===\n {article}")
+    print (f"===Random article===\n {article['link']}")
 
 
     try:
-        response_article = requests.get(article[link], headers=headers, timeout=10)
+        response_article = requests.get(article["link"], headers=headers, timeout=10)
         response_article.raise_for_status()
     except Exception as e:
         print(f"Error fetching page: {e}")
@@ -69,11 +70,10 @@ def fetch_ai_news():
     soup_article = BeautifulSoup(response_article.text, "html.parser")
 
     article_summary_helper = []
-    for item in soup_article.select("h2 p"):
+    for item in soup_article.select("p"):
         heading = item.get_text(strip=True)
-        desc = item.get_text(strip=True)
-        artile_summary_helper.append({"heading":heading,"desc":desc})
-    print (f"===Article summary===\n {artile_summary_helper}")
+        article_summary_helper.append(heading)
+    print (f"===Article summary helper===\n {article_summary_helper}")
 
     return article_summary_helper
 
