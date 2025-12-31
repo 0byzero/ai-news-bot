@@ -14,22 +14,28 @@ def health_check():
 @app.get("/ai-news")
 def get_ai_news():
     """
-    Fetch AI news, summarize them with OpenAI,
-    and return both the raw articles and the formatted summary.
+    Fetch an AI news article, summarize it with OpenAI,
+    and return both the raw scraped text and the formatted summary.
     """
-    articles = fetch_ai_news()
+    # fetch_ai_news returns: (article_paragraphs, link)
+    article_paragraphs, link = fetch_ai_news()
 
-    if not articles:
+    # handle failure / empty scrape
+    if not article_paragraphs or not link:
         return {
             "status": "error",
             "message": "Could not fetch AI news.",
-            "articles": [],
+            "article_paragraphs": [],
+            "link": link,
             "summary": None,
         }
 
-    summary_text = summarize_headlines(articles)
+    # summarize using OpenAI
+    summary_text = summarize_headlines(article_paragraphs, link)
 
     return {
         "status": "ok",
-        "summary": summary_text, # the WhatsApp-style summary string
+        "link": link,
+        "article_paragraphs": article_paragraphs,
+        "summary": summary_text,  # the WhatsApp-style summary string
     }
