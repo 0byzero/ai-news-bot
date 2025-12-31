@@ -51,7 +51,7 @@ def fetch_ai_news():
 
     article = random.choice(articles)
 
-    print (f"===Random article===\n {artile}")
+    print (f"===Random article===\n {article}")
 
 
     try:
