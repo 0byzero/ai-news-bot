@@ -42,12 +42,17 @@ def fetch_ai_news():
         link = item.get("href")
         if link and link.startswith("/"):
             link = "https://techcrunch.com/" + link
+        if title == '' or title in articles:
+            continue
         if title != '' or title not in articles:
             articles.append({"title": title, "link": link})
     
     print (articles)
 
     article = random.choice(articles)
+
+    print (f"===Random article===\n {artile}")
+
 
     try:
         response_article = requests.get(article[link], headers=headers, timeout=10)
